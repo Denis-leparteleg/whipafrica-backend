@@ -4,7 +4,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from .models import User
 import jwt, datetime
-
+from django.shortcuts import  render
+import requests
 
 # Create your views here.
 class RegisterView(APIView):
@@ -72,3 +73,15 @@ class LogoutView(APIView):
             'message': 'success'
         }
         return response
+    
+class StatsView(APIView):
+    def get(self, request):
+        url = "https://songstats.p.rapidapi.com/artists/stats"
+        querystring = {"source":"all","spotify_artist_id":"2h93pZq0e7k5yf4dywlkpM","songstats_artist_id":"vxk62ige"}
+        headers = {
+            'x-rapidapi-host': "songstats.p.rapidapi.com",
+            'x-rapidapi-key': ""
+            }
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        print(response.text)
+        return Response(response)
