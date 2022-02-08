@@ -14,7 +14,9 @@ import os
 from pathlib import Path
 from decouple import config,Csv
 import dj_database_url
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'users'
+    'users',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -81,21 +84,14 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if config('MODE')=='dev':
-    DATABASES = {
-        'default': {
-           'ENGINE': 'django.db.backends.postgresql_psycopg2',
-           'NAME': config('DB_NAME'),
-           'USER': config('DB_USER'),
-           'PASSWORD': config('DB_PASSWORD'),
-           'HOST': config('DB_HOST'),
-           'PORT': '',
-       }
+DATABASES = {
+    'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+    'PASSWORD': config('DB_PASSWORD'),
     }
-else:
-    DATABASES = {
-        'default': dj_database_url.config(default=config('DATABASE_URL'))
-    }
+}
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 
@@ -121,7 +117,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+cloudinary.config( 
+  cloud_name = config("cloud_name"), 
+  api_key = config("api_key"), 
+  api_secret = config("api_secret") 
+)
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
