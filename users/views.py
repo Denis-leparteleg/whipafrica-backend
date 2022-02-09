@@ -2,11 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
-from .models import User
+from .models import User, ArtistData
 import jwt, datetime
 from django.shortcuts import  render
 import requests
+import json
 
+from django.core import serializers
 # Create your views here.
 class RegisterView(APIView):
     def post(self, request):
@@ -76,12 +78,51 @@ class LogoutView(APIView):
     
 class StatsView(APIView):
     def get(self, request):
+        
         url = "https://songstats.p.rapidapi.com/artists/stats"
-        querystring = {"source":"all","spotify_artist_id":"2h93pZq0e7k5yf4dywlkpM","songstats_artist_id":"vxk62ige"}
+        
+        querystring = {"source":"all","spotify_artist_id":"5nnVpORg4Aha9aWRTZA5No"}
+        
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
+            
             'x-rapidapi-key': ""
             }
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        print(response.text)
-        return Response(response)
+        
+        response = requests.request("GET", url, headers=headers, params=querystring).json()
+        
+        result=response["result"]
+        
+        stats=response["stats"]
+        
+        source=stats[0]["source"]
+        
+        info = response["artist_info"]
+     
+        name = info["name"]
+        
+        image = info["avatar"]
+      
+        data=stats[0]["data"]
+        
+        artist = ArtistData.objects.create(name=name, image=image, stats=data)
+        
+        artist.save()
+        
+        print(artist)
+        
+        return Response(data)
+    
+    
+class PopularView(APIView):
+    
+    def get(self, request):
+
+        artist = ArtistData.objects.all()
+       
+        artist_list = serializers.serialize('json', artist)
+        
+        print(artist_list)
+        
+        return Response(artist_list)    
+
