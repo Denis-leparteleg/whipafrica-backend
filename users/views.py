@@ -6,6 +6,7 @@ from .models import User
 import jwt, datetime
 from django.shortcuts import  render
 import requests
+import json
 
 # Create your views here.
 class RegisterView(APIView):
@@ -80,8 +81,9 @@ class StatsView(APIView):
         querystring = {"source":"all","spotify_artist_id":"2h93pZq0e7k5yf4dywlkpM","songstats_artist_id":"vxk62ige"}
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
-            'x-rapidapi-key': ""
+            # 'x-rapidapi-key': "53f05c0b1amsh90257705c3be42cp14d383jsn20b8197584af"
             }
         response = requests.request("GET", url, headers=headers, params=querystring)
         print(response.text)
+        
         return Response(response)
