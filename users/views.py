@@ -81,7 +81,8 @@ class StatsView(APIView):
         
         url = "https://songstats.p.rapidapi.com/artists/stats"
         
-        querystring = {"source":"all","spotify_artist_id":"5nnVpORg4Aha9aWRTZA5No"}
+        # querystring = {"source":"all","spotify_artist_id":"5nnVpORg4Aha9aWRTZA5No"}
+        querystring = {"source":"all","spotify_artist_id":"4Rj9lQm9oSiMlirgpsM6eo"}
         
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
@@ -91,11 +92,11 @@ class StatsView(APIView):
         
         response = requests.request("GET", url, headers=headers, params=querystring).json()
         
-        result=response["result"]
+        # result=response["result"]
         
         stats=response["stats"]
         
-        source=stats[0]["source"]
+        # source=stats[0]["source"]
         
         info = response["artist_info"]
      
@@ -103,7 +104,7 @@ class StatsView(APIView):
         
         image = info["avatar"]
       
-        data=stats[0]["data"]
+        data=stats[0:-1]
         
         artist = ArtistData.objects.create(name=name, image=image, stats=data)
         
@@ -124,5 +125,5 @@ class PopularView(APIView):
         
         print(artist_list)
         
-        return Response(artist_list)    
+        return Response(artist_list)      
 
