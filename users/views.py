@@ -6,6 +6,8 @@ from .models import User, ArtistData
 import jwt, datetime
 from django.shortcuts import  render
 import requests
+import json
+from decouple import config
 from django.core import serializers
 # Create your views here.
 class RegisterView(APIView):
@@ -79,7 +81,8 @@ class StatsView(APIView):
         
         url = "https://songstats.p.rapidapi.com/artists/stats"
         
-        querystring = {"source":"all","spotify_artist_id":"3CCHaNvCKYNWWrAYo5C8TL"}
+        # querystring = {"source":"all","spotify_artist_id":"5nnVpORg4Aha9aWRTZA5No"}
+        querystring = {"source":"all","spotify_artist_id":"1xxXRVpuEm3X3p1QEm61Az"}
         
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
@@ -89,11 +92,11 @@ class StatsView(APIView):
         
         response = requests.request("GET", url, headers=headers, params=querystring).json()
         
-        result=response["result"]
+        # result=response["result"]
         
         stats=response["stats"]
         
-        source=stats[0]["source"]
+        # source=stats[0]["source"]
         
         info = response["artist_info"]
      
@@ -101,11 +104,9 @@ class StatsView(APIView):
         
         image = info["avatar"]
       
-        spotify=stats[0]["data"]
-        applemusic=stats[1]["data"]
-        youtube=stats[4]["data"]
-        tiktok=stats[5]["data"]
-        artist = ArtistData.objects.create(name=name, image=image, spotify=spotify,applemusic=applemusic,youtube=youtube,tiktok=tiktok,)
+        data=stats[0:-1]
+        
+        artist = ArtistData.objects.create(name=name, image=image, stats=data)
         
         artist.save()
         
@@ -124,4 +125,5 @@ class PopularView(APIView):
         
         print(artist_list)
         
-        return Response(artist_list)    
+        return Response(artist_list)      
+
