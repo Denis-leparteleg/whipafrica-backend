@@ -79,12 +79,12 @@ class StatsView(APIView):
         
         url = "https://songstats.p.rapidapi.com/artists/stats"
         
-        querystring = {"source":"all","spotify_artist_id":"5nnVpORg4Aha9aWRTZA5No"}
+        querystring = {"source":"all","spotify_artist_id":"3CCHaNvCKYNWWrAYo5C8TL"}
         
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
             
-            'x-rapidapi-key': ""
+            'x-rapidapi-key': "53f05c0b1amsh90257705c3be42cp14d383jsn20b8197584af"
             }
         
         response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -101,15 +101,17 @@ class StatsView(APIView):
         
         image = info["avatar"]
       
-        data=stats[0]["data"]
-        
-        artist = ArtistData.objects.create(name=name, image=image, stats=data)
+        spotify=stats[0]["data"]
+        applemusic=stats[1]["data"]
+        youtube=stats[4]["data"]
+        tiktok=stats[5]["data"]
+        artist = ArtistData.objects.create(name=name, image=image, spotify=spotify,applemusic=applemusic,youtube=youtube,tiktok=tiktok,)
         
         artist.save()
         
         print(artist)
         
-        return Response(data)
+        return Response(youtube)
     
     
 class PopularView(APIView):
