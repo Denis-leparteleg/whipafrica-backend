@@ -15,12 +15,10 @@ class User(AbstractUser):
 
     
 class ArtistData(models.Model):
-    image = CloudinaryField('image',null=True) 
+    image = models.CharField(max_length=1255,null=True) 
     name = models.CharField(max_length=1255,null=True)
-    spotify = models.CharField(max_length=10255,null=True)
-    applemusic = models.CharField(max_length=10255,null=True)
-    youtube = models.CharField(max_length=10255,null=True)
-    tiktok = models.CharField(max_length=10255,null=True)
+    stats = models.CharField(max_length=10255,null=True)
+   
     def __str__(self):
         return self.name 
     
