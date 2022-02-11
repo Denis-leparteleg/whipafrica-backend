@@ -66,7 +66,7 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
         return Response(serializer.data)
-git 
+
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
@@ -87,7 +87,7 @@ class StatsView(APIView):
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
             
-            'x-rapidapi-key': config('STATS_API_KEY'),
+            'x-rapidapi-key': "53f05c0b1amsh90257705c3be42cp14d383jsn20b8197584af",
             }
         
         response = requests.request("GET", url, headers=headers, params=querystring).json()
