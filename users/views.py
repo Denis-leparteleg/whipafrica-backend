@@ -9,6 +9,7 @@ import requests
 import json
 from decouple import config
 from django.core import serializers
+
 # Create your views here.
 class RegisterView(APIView):
     def post(self, request):
@@ -65,8 +66,7 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
         return Response(serializer.data)
-
-
+git 
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
