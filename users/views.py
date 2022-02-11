@@ -87,7 +87,7 @@ class StatsView(APIView):
         headers = {
             'x-rapidapi-host': "songstats.p.rapidapi.com",
             
-            'x-rapidapi-key': "53f05c0b1amsh90257705c3be42cp14d383jsn20b8197584af"
+            'x-rapidapi-key': ""
             }
         
         response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -112,7 +112,7 @@ class StatsView(APIView):
         
         print(artist)
         
-        return Response(youtube)
+        return Response(data)
     
     
 class PopularView(APIView):
